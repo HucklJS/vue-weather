@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Preloader v-if="true" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Preloader from "./components/Preloader"
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Preloader,
   }
 }
 </script>
@@ -29,5 +28,8 @@ export default {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+body {
+  background-color: #f6f6f6;
 }
 </style>
