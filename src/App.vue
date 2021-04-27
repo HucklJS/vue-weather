@@ -1,29 +1,41 @@
 <template>
   <div id="app">
-    <Preloader v-if="false" />
     <SearchBar
-      v-else
       :current-input="currentInput"
       @change-current-input="changeCurrentInput"
       @find-weather="findWeather"
     />
+    <div class="main">
+      <Preloader v-if="isLoading" />
+      <div v-else-if="isError" class="error">{{errorMsg}}</div>
+      <WeatherInfo
+        v-else
+        :weather="weather"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import Preloader from "./components/Preloader"
 import SearchBar from "./components/SearchBar"
+import WeatherInfo from "./components/WeatherInfo"
+import getData from "./api"
 
 export default {
   name: 'App',
   components: {
+    WeatherInfo,
     Preloader,
     SearchBar
   },
   data() {
     return {
       currentInput: 'Moscow',
-      API_KEY: '1d55a69956adecf00c5bebb2a3c89b73'
+      isLoading: false,
+      isError: false,
+      errorMsg: '',
+      weather: null
     }
   },
   methods: {
@@ -31,9 +43,40 @@ export default {
       this.currentInput = newValue
     },
     async findWeather(city) {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city.toLowerCase()}&appid=${this.API_KEY}&units=metric`)
-      const data = await response.json()
-      console.log(data)
+      if (city === '') {
+        return this.setError('Please enter city name')
+      }
+
+      this.startLoad()
+
+      const data = await getData(city)
+
+      if (typeof data === 'string') {
+        if (data === 'not found') {
+          this.setError('Can\'t find this city')
+        } else {
+          this.setError('Unexpected error')
+        }
+      } else {
+        setTimeout(() => {
+          this.setWeather(data)
+        }, 200)
+      }
+    },
+    startLoad() {
+      this.isLoading = true
+      this.isError = false
+      this.errorMsg = ''
+      this.weather = null
+    },
+    setError(msg) {
+      this.isLoading = false
+      this.isError = true
+      this.errorMsg = msg
+    },
+    setWeather(weather) {
+      this.isLoading = false
+      this.weather = weather
     }
   }
 }
