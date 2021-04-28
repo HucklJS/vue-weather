@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <MyCities
+      :my-cities-list="myCitiesList"
+      @find-weather="findWeather"
+      @remove-city="removeCity"
+    />
     <SearchBar
       :current-input="currentInput"
       @change-current-input="changeCurrentInput"
@@ -11,6 +16,8 @@
       <WeatherInfo
         v-else
         :weather="weather"
+        @toggle-city="toggleCity"
+        :is-liked="!!myCitiesList.find(c => c.name === weather.name)"
       />
     </div>
   </div>
@@ -20,11 +27,13 @@
 import Preloader from "./components/Preloader"
 import SearchBar from "./components/SearchBar"
 import WeatherInfo from "./components/WeatherInfo"
+import MyCities from "./components/MyCities"
 import getData from "./api"
 
 export default {
   name: 'App',
   components: {
+    MyCities,
     WeatherInfo,
     Preloader,
     SearchBar
@@ -35,7 +44,8 @@ export default {
       isLoading: false,
       isError: false,
       errorMsg: '',
-      weather: null
+      weather: null,
+      myCitiesList: []
     }
   },
   methods: {
@@ -62,6 +72,22 @@ export default {
           this.setWeather(data)
         }, 200)
       }
+    },
+    toggleCity(name, country) {
+      const index = this.myCitiesList.findIndex(
+        city => city.name.toLowerCase() === name.toLowerCase()
+      )
+      if (index === -1) {
+        this.myCitiesList.push({
+          name,
+          country
+        })
+      } else {
+        this.myCitiesList.splice(index, 1)
+      }
+    },
+    removeCity(name) {
+      this.toggleCity(name)
     },
     startLoad() {
       this.isLoading = true
@@ -98,4 +124,5 @@ export default {
 body {
   background-color: #f6f6f6;
 }
+
 </style>
