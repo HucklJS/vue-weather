@@ -4,6 +4,7 @@
       :my-cities-list="myCitiesList"
       @find-weather="findWeather"
       @remove-city="removeCity"
+      @find-weather-in-current-city="findWeatherInCurrentCity"
     />
     <SearchBar
       :current-input="currentInput"
@@ -71,6 +72,28 @@ export default {
         setTimeout(() => {
           this.setWeather(data)
         }, 200)
+      }
+    },
+    findWeatherInCurrentCity() {
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const data = await getData(null, position)
+
+          if (typeof data === 'string') {
+            if (data === 'not found') {
+              this.setError('Can\'t find this position')
+            } else {
+              this.setError('Unexpected error')
+            }
+          } else {
+            setTimeout(() => {
+              console.log(data)
+              this.setWeather(data)
+            }, 200)
+          }
+        })
+      } else{
+        alert("Ops! Something went wrong try reloading the page.")
       }
     },
     toggleCity(name, country) {

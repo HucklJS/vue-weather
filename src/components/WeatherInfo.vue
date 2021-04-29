@@ -53,24 +53,6 @@
 .heart.is-liked{
   background-position: right;
 }
-/*.animated-heart {*/
-/*  animation-name: moveHeart;*/
-/*  animation-duration: 0.8s;*/
-/*  animation-iteration-count: 1;*/
-/*  animation-timing-function: steps(28);*/
-/*  animation-fill-mode: forwards;*/
-/*}*/
-/*@keyframes moveHeart {*/
-/*  0% {*/
-/*    background-position: left;*/
-/*  }*/
-/*  50% {*/
-/*    background-position: right;*/
-/*  }*/
-/*  100% {*/
-/*    background-position: right;*/
-/*  }*/
-/*}*/
 
 .weather-box {
   text-align: center;

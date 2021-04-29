@@ -1,11 +1,14 @@
 const API_KEY = '1d55a69956adecf00c5bebb2a3c89b73'
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
-export default async function getData(city) {
+export default async function getData(city, position=null) {
   try {
-    const response = await fetch(
+    const response = await (position ? fetch(
+      `${BASE_URL}?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=${API_KEY}`
+    ) : fetch(
       `${BASE_URL}?q=${city.toLowerCase()}&appid=${API_KEY}&units=metric`
-    )
+    ))
+
     const data = await response.json()
 
     if (data.cod === '404') {

@@ -1,5 +1,11 @@
 <template>
   <div class="my-cities" >
+    <p
+      class="city my-current-city"
+      @click="$emit('find-weather-in-current-city')"
+    >
+      Find my current position
+    </p>
     <h2 class="title">My cities</h2>
     <ul class="list" v-if="myCitiesList.length">
       <li class="item" v-for="city of myCitiesList" :key="city.name">
@@ -51,6 +57,14 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.city {
+  cursor: pointer;
+}
+
+.my-current-city {
+  margin: 10px 0 20px;
 }
 
 button {
