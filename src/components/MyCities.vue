@@ -11,7 +11,8 @@
       <li class="item" v-for="city of myCitiesList" :key="city.name">
         <p class="city"
            @click="$emit('find-weather', city.name)"
-           aria-label="Liked city">
+           aria-label="Liked city"
+        >
           <span class="name">{{city.name}}, </span>
           <span class="code">{{city.country}}</span>
         </p>
@@ -20,7 +21,7 @@
                 @click="$emit('remove-city', city.name)"
                 aria-label="Delete from favorite">
         </button>
-      </li>
+      </li>q
     </ul>
     <div class="cities-empty" v-else>
       Like city and it will be here
